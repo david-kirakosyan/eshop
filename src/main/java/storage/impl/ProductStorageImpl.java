@@ -54,8 +54,8 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public Product getById(int id) {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM product WHERE id = " + id);
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM product WHERE id = " + id)) {
+            ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 Product product = getProduct(id, resultSet);
                 return product;
@@ -70,9 +70,8 @@ public class ProductStorageImpl implements ProductStorage {
     @Override
     public List<Product> getAll() {
         List<Product> productList = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM product");
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM product")){
+            ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 Product product = getProduct(resultSet.getInt("id"), resultSet);
                 productList.add(product);
@@ -86,8 +85,8 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public void deleteProductById(int id) {
-        try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("DELETE FROM product WHERE id = " + id);
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM product WHERE id = " + id)) {
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,8 +95,8 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public void printSumOfProducts() {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT COUNT(quantity) FROM product");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(quantity) FROM product")) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int quantity = resultSet.getInt(1);
                 System.out.println("Sum of quantity products: " +quantity);
@@ -110,12 +109,11 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public void printMaxOfPriceProducts() {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT MAX(price) AS max_price FROM product ");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT MAX(price) AS max_price FROM product ")) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int maxPrice = resultSet.getInt("max_price");
-                System.out.println("The price of the most expensive product");
-                System.out.println(maxPrice);
+                System.out.println("The price of the most expensive product: " + maxPrice);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,12 +123,11 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public void printMinOfPriceProducts() {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT MIN(price) AS min_price FROM product ");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT MIN(price) AS min_price FROM product ")) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int minPrice = resultSet.getInt("min_price");
-                System.out.println("The cheapest price of the product");
-                System.out.println(minPrice);
+                System.out.println("The cheapest price of the product: " + minPrice);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,12 +137,11 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public void printAVGOfPriceProducts() {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT AVG(price) AS avg_price FROM product ");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT AVG(price) AS avg_price FROM product ")) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int avgPrice = resultSet.getInt("avg_price");
-                System.out.println("average product price");
-                System.out.println(avgPrice);
+                System.out.println("average product price: " + avgPrice);
             }
         } catch (SQLException e) {
             e.printStackTrace();

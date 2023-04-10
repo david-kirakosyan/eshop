@@ -142,10 +142,14 @@ public class EshopMain implements Commands {
         for (Category category : categoryList) {
             System.out.println(category);
         }
-        System.out.println("Please input Category id");
-        int id = Integer.parseInt(scanner.nextLine());
-        categoryStorage.deleteCategoryById(id);
-        System.out.println("Category deleted");
+        try {
+            System.out.println("Please input Category id");
+            int id = Integer.parseInt(scanner.nextLine());
+            categoryStorage.deleteCategoryById(id);
+            System.out.println("Category deleted");
+        }catch (RuntimeException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     private static void editCategoryById() {
