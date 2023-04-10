@@ -85,25 +85,30 @@ public class EshopMain implements Commands {
         for (Product product : productList) {
             System.out.println(product);
         }
-        System.out.println("Please input Category id");
-        int id = Integer.parseInt(scanner.nextLine());
-        if (productStorage.getById(id) != null){
-            System.out.println("Please input Product name, description, price, quantity, category_id");
-            String productStr = scanner.nextLine();
-            String[] productData = productStr.split(",");
-            Product product = new Product();
-            product.setId(id);
-            product.setName(productData[0]);
-            product.setDescription(productData[1]);
-            product.setPrice(Double.parseDouble(productData[2]));
-            product.setQuantity(Integer.parseInt(productData[3]));
-            int categoryId = Integer.parseInt(productData[4]);
-            Category categoryById = categoryStorage.getById(categoryId);
-            if (categoryById != null){
-                product.setCategory(categoryById);
-                productStorage.editProductById(product);
+        try {
+            System.out.println("Please input Category id");
+            int id = Integer.parseInt(scanner.nextLine());
+            if (productStorage.getById(id) != null) {
+                System.out.println("Please input Product name, description, price, quantity, category_id");
+                String productStr = scanner.nextLine();
+                String[] productData = productStr.split(",");
+                Product product = new Product();
+                product.setId(id);
+                product.setName(productData[0]);
+                product.setDescription(productData[1]);
+                product.setPrice(Double.parseDouble(productData[2]));
+                product.setQuantity(Integer.parseInt(productData[3]));
+                int categoryId = Integer.parseInt(productData[4]);
+                Category categoryById = categoryStorage.getById(categoryId);
+                if (categoryById != null) {
+                    product.setCategory(categoryById);
+                    productStorage.editProductById(product);
+                }
             }
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println(e.getMessage());
         }
+
     }
 
     private static void addProduct() {
@@ -111,22 +116,25 @@ public class EshopMain implements Commands {
         for (Category category : categoryList) {
             System.out.println(category);
         }
-        System.out.println("Please input Category id");
-        int id = Integer.parseInt(scanner.nextLine());
-        Category categoryId = categoryStorage.getById(id);
-        if (categoryId != null) {
-            System.out.println("Please input Product name, description, price, quantity");
-            String productStr = scanner.nextLine();
-            String[] productData = productStr.split(",");
-            Product product = new Product();
-            product.setCategory(categoryId);
-            product.setName(productData[0]);
-            product.setDescription(productData[1]);
-            product.setPrice(Double.parseDouble(productData[2]));
-            product.setQuantity(Integer.parseInt(productData[3]));
-            productStorage.saveProduct(product);
+        try {
+            System.out.println("Please input Category id");
+            int id = Integer.parseInt(scanner.nextLine());
+            Category categoryId = categoryStorage.getById(id);
+            if (categoryId != null) {
+                System.out.println("Please input Product name, description, price, quantity");
+                String productStr = scanner.nextLine();
+                String[] productData = productStr.split(",");
+                Product product = new Product();
+                product.setCategory(categoryId);
+                product.setName(productData[0]);
+                product.setDescription(productData[1]);
+                product.setPrice(Double.parseDouble(productData[2]));
+                product.setQuantity(Integer.parseInt(productData[3]));
+                productStorage.saveProduct(product);
+            }
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println(e.getMessage());
         }
-
     }
 
     private static void deleteCategoryById() {
@@ -145,18 +153,22 @@ public class EshopMain implements Commands {
         for (Category category : categoryList) {
             System.out.println(category);
         }
-        System.out.println("Please input Category id");
-        int id = Integer.parseInt(scanner.nextLine());
-        if (categoryStorage.getById(id) != null) {
-            System.out.println("Please input Category name");
-            String name = scanner.nextLine();
-            Category category = new Category();
-            category.setId(id);
-            category.setName(name);
-            categoryStorage.editCategoryById(category);
-            System.out.println("Category was edit");
-        } else {
-            System.out.println("Category doesn't exist");
+        try {
+            System.out.println("Please input Category id");
+            int id = Integer.parseInt(scanner.nextLine());
+            if (categoryStorage.getById(id) != null) {
+                System.out.println("Please input Category name");
+                String name = scanner.nextLine();
+                Category category = new Category();
+                category.setId(id);
+                category.setName(name);
+                categoryStorage.editCategoryById(category);
+                System.out.println("Category was edit");
+            } else {
+                System.out.println("Category doesn't exist");
+            }
+        } catch (NumberFormatException e) {
+            System.err.println(e.getMessage());
         }
     }
 

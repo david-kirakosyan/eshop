@@ -42,7 +42,7 @@ public class ProductStorageImpl implements ProductStorage {
             ps.setString(1, product.getName());
             ps.setString(2, product.getDescription());
             ps.setDouble(3, product.getPrice());
-            ps.setInt(4,product.getQuantity());
+            ps.setInt(4, product.getQuantity());
             ps.setInt(5, product.getCategory().getId());
             ps.setInt(6, product.getId());
             ps.executeUpdate();
@@ -97,10 +97,10 @@ public class ProductStorageImpl implements ProductStorage {
     @Override
     public void printSumOfProducts() {
         try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS quantity FROM product ");
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(quantity) FROM product");
             while (resultSet.next()) {
-                int quantity = resultSet.getInt("quantity");
-                System.out.println(quantity);
+                int quantity = resultSet.getInt(1);
+                System.out.println("Sum of quantity products: " +quantity);
             }
         } catch (SQLException e) {
             e.printStackTrace();
