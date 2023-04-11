@@ -41,8 +41,9 @@ public class CategoryStorageImpl implements CategoryStorage {
 
     @Override
     public Category getById(int id) {
-        String str = "SELECT * FROM category WHERE id = " + id;
+        String str = "SELECT * FROM category WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(str)) {
+            ps.setInt(1, id);
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 Category category = new Category();
@@ -59,8 +60,7 @@ public class CategoryStorageImpl implements CategoryStorage {
     @Override
     public List<Category> getAll() {
         List<Category> categoryList = new ArrayList<>();
-        String sql = "SELECT * FROM category";
-        try (PreparedStatement ps = connection.prepareStatement(sql)){
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM category")) {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 Category category = new Category();
@@ -76,8 +76,8 @@ public class CategoryStorageImpl implements CategoryStorage {
 
     @Override
     public void deleteCategoryById(int id) {
-        String sql = "DELETE FROM category WHERE id = " + id;
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM category WHERE id = ?")) {
+            ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

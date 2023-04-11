@@ -54,7 +54,8 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public Product getById(int id) {
-        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM product WHERE id = " + id)) {
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM product WHERE id = ?")) {
+            ps.setInt(1,id);
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 Product product = getProduct(id, resultSet);
@@ -85,7 +86,8 @@ public class ProductStorageImpl implements ProductStorage {
 
     @Override
     public void deleteProductById(int id) {
-        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM product WHERE id = " + id)) {
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM product WHERE id = ?")) {
+            ps.setInt(1,id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
