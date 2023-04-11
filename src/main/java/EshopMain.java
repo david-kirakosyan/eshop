@@ -74,10 +74,15 @@ public class EshopMain implements Commands {
         for (Product product : productList) {
             System.out.println(product);
         }
-        System.out.println("Please input Category id");
-        int id = Integer.parseInt(scanner.nextLine());
-        productStorage.deleteProductById(id);
-        System.out.println("Category deleted");
+        try {
+            System.out.println("Please input Category id");
+            int id = Integer.parseInt(scanner.nextLine());
+            productStorage.deleteProductById(id);
+            System.out.println("Category deleted");
+        } catch (NumberFormatException e){
+            System.err.println(e.getMessage());
+        }
+
     }
 
     private static void editProductByID() {
@@ -147,7 +152,7 @@ public class EshopMain implements Commands {
             int id = Integer.parseInt(scanner.nextLine());
             categoryStorage.deleteCategoryById(id);
             System.out.println("Category deleted");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
     }
